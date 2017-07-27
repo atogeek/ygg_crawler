@@ -29,8 +29,8 @@ class Ygg
         $this->torrents = array();
         $this->search = $search;
         $this->pagination = $pagination;
-        $this->login = 'atogeek';
-        $this->password = 'T411isD3ad';
+        $this->login = 'username';
+        $this->password = 'password';
     }
 
     /**
