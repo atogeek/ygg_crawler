@@ -43,7 +43,7 @@ class Ygg
         $this->search = $search;
         $this->pagination = $pagination;
         $this->login = 'username';
-        $this->password = 'password'; // TODO : supprimer avant commit
+        $this->password = 'password';
     }
 
     /**
