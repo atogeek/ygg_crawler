@@ -1,7 +1,10 @@
 # ygg_crawler
 
-Avec la fermeture du regretté tracker de torrent T411, nous sommes tous devenu orphelin de son incroyable API.
-Ce POC permet de parcourir le site YggTorrent (petit frère de T411), et d'en extraire les torrents.
+YGG Crawler est une librairie vous permettant de parcourir et de récupérer les fichiers torrents du site www.yggtorrent.com
+
+Le but du projet est de permettre aux développeurs utilisant l'API du site T411 avant sa fermeture, de pouvoir récupérer des torrents sur le nouveau site YggTorrent.
+
+/!\ Attention, intégrer la librairie en l'état dans vos application peut s'avérer dangeureux. Etant à l'état de POC, vous pouvez rencontrer des instabilités, lenteurs, erreurs ou autres failles de sécurités.
 
 ## Fonctionne
 - Recherche par mot clef
