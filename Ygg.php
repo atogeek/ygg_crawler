@@ -1,7 +1,7 @@
 <?php
 
 /**
- * POC permettant de parcourir le site www.yggtorrent.com et d'en extraire les torrents recherchés
+ * POC permettant de parcourir le site www.yggtorrent.com et d'en extraire les torrents recherchÃ©s
  * User: Anthony Saugrain
  * Date: 09/11/2016
  * Time: 18:08
@@ -42,8 +42,8 @@ class Ygg
         $this->torrents = array();
         $this->search = $search;
         $this->pagination = $pagination;
-        $this->login = 'atogeek';
-        $this->password = 'babananou13'; // TODO : supprimer avant commit
+        $this->login = 'username';
+        $this->password = 'password'; // TODO : supprimer avant commit
     }
 
     /**
