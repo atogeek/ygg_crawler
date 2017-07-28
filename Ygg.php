@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Created by PhpStorm.
- * User: asaugrain
+ * POC permettant de parcourir le site www.yggtorrent.com et d'en extraire les torrents recherchés
+ * User: Anthony Saugrain
  * Date: 09/11/2016
  * Time: 18:08
  */
@@ -12,16 +12,29 @@ require_once('lib/simple_html_dom.php');
 class Ygg
 {
     const BASE_URL = "https://yggtorrent.com";
+    const CATEGORY_MOVIES = 2145;
+    const CATEGORY_AUDIO = 2139;
+    const CATEGORY_APPS = 2144;
+    const CATEGORY_VIDEOGAMES = 2142;
+    const CATEGORY_EBOOKS = 2140;
+    const CATEGORY_EMULATION = 2141;
+    const CATEGORY_GPS = 2143;
+    const CATEGORY_ADULT = 2188;
+
     private $up;
     private $down;
     private $torrents;
     private $html;
     private $search;
     private $pagination;
-
     private $login;
     private $password;
 
+    /**
+     * Ygg constructor.
+     * @param string $search
+     * @param int $pagination
+     */
     public function __construct($search = '', $pagination = 1)
     {
         $this->up = '';
@@ -29,8 +42,27 @@ class Ygg
         $this->torrents = array();
         $this->search = $search;
         $this->pagination = $pagination;
-        $this->login = 'username';
-        $this->password = 'password';
+        $this->login = 'atogeek';
+        $this->password = 'babananou13'; // TODO : supprimer avant commit
+    }
+
+    /**
+     * Get category id by category name
+     * @param $category
+     * @return bool|int
+     */
+    public static function getCategoryId($category)
+    {
+        switch ($category) {
+            case 'movies':
+                $category_id = self::CATEGORY_MOVIES;
+                break;
+            default:
+                $category_id = false;
+                break;
+        }
+
+        return $category_id;
     }
 
     /**
@@ -219,16 +251,24 @@ class Ygg
     {
         try {
             $term = urlencode($this->search);
-            for ($i = 1; $i <= $this->pagination; $i++) {
-                $page = $this->call('basic', '/engine/search?q=' . $term . '&page=' . $i);
-                $this->html = $this->open($page);
-                $this->extractTorrents();
-            }
+            $this->loopForTorrent('/engine/search?q=' . $term);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
     }
 
+    /**
+     * Loop and find torrent in given url
+     * @param $url
+     */
+    private function loopForTorrent($url)
+    {
+        for ($i = 1; $i <= $this->pagination; $i++) {
+            $page = $this->call('basic', $url . '&page=' . $i);
+            $this->html = $this->open($page);
+            $this->extractTorrents();
+        }
+    }
 
     /**
      * Extract founded torrents
@@ -284,6 +324,20 @@ class Ygg
 
             return false;
 
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    /**
+     * Search torrent of the moment in given category
+     * @param $category
+     * @throws Exception
+     */
+    public function searchMoment($category)
+    {
+        try {
+            $this->loopForTorrent('/torrents/popular?category=' . $category);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
