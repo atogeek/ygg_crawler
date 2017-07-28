@@ -55,6 +55,8 @@ function getMoment()
         $category_id = $ygg::getCategoryId($_GET['category']);
         $ygg->searchMoment($category_id);
         trashDisplay($ygg);
+    } else {
+        echo 'Unable to login. Please check your credentials';
     }
 }
 

@@ -42,8 +42,8 @@ class Ygg
         $this->torrents = array();
         $this->search = $search;
         $this->pagination = $pagination;
-        $this->login = 'atogeek';
-        $this->password = 'babananou13'; // TODO : supprimer avant commit
+        $this->login = 'username';
+        $this->password = 'password';
     }
 
     /**
@@ -56,6 +56,27 @@ class Ygg
         switch ($category) {
             case 'movies':
                 $category_id = self::CATEGORY_MOVIES;
+                break;
+            case 'audio':
+                $category_id = self::CATEGORY_AUDIO;
+                break;
+            case 'apps':
+                $category_id = self::CATEGORY_APPS;
+                break;
+            case 'videogames':
+                $category_id = self::CATEGORY_VIDEOGAMES;
+                break;
+            case 'ebooks':
+                $category_id = self::CATEGORY_EBOOKS;
+                break;
+            case 'emulation':
+                $category_id = self::CATEGORY_EMULATION;
+                break;
+            case 'gps':
+                $category_id = self::CATEGORY_GPS;
+                break;
+            case 'adult':
+                $category_id = self::CATEGORY_ADULT;
                 break;
             default:
                 $category_id = false;
