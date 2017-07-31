@@ -9,9 +9,9 @@ Le but du projet est de permettre aux développeurs utilisant l'API du site T411
 ## Fonctionne
 - Recherche par mot clef
 - Récupération des torrents du moment
+- Récupération des torrents des torents de la veille
 
 ## A venir
-- Récupération des torrents des torents de la veille
 - Récupération des torrents du jour
 
 ## Exemple d'utilisation
