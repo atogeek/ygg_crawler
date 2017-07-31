@@ -29,6 +29,7 @@ class Ygg
     private $pagination;
     private $login;
     private $password;
+    private $order;
 
     /**
      * Ygg constructor.
@@ -44,6 +45,7 @@ class Ygg
         $this->pagination = $pagination;
         $this->login = 'username';
         $this->password = 'password';
+        $this->order = 'seeds';
     }
 
     /**
@@ -158,7 +160,7 @@ class Ygg
             $headers[] = "Accept: */*";
             $headers[] = "Connection: Keep-Alive";
 
-            $cookie_file_path = "/Applications/XAMPP/xamppfiles/htdocs/ygg_crawler/tmp/cookies.txt";
+            $cookie_file_path = "./tmp/cookies.txt";
 
             //return the transfer as a string
             curl_setopt($ch, CURLOPT_URL, $url);
@@ -176,7 +178,7 @@ class Ygg
             $output = curl_exec($ch);
 
             if ($type == 'download') {
-                $destination = "/Applications/XAMPP/xamppfiles/htdocs/ygg_crawler/dl/download.torrent";
+                $destination = "./dl/download.torrent";
                 $file = fopen($destination, "w+");
                 fputs($file, $output);
                 fclose($file);
@@ -340,11 +342,32 @@ class Ygg
             }
 
             if (count($this->torrents) > 0) {
-                return true;
+                if ($this->orderBy($this->order)) {
+                    return true;
+                }
             }
 
             return false;
 
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    /**
+     * Sort torrents
+     * @return bool
+     * @throws Exception
+     */
+    public function orderBy()
+    {
+        try {
+            $order = $this->order;
+            usort($this->torrents, function ($a, $b) use ($order) {
+                return $b[$order] - $a[$order];
+            });
+
+            return true;
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
@@ -359,6 +382,20 @@ class Ygg
     {
         try {
             $this->loopForTorrent('/torrents/popular?category=' . $category);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    /**
+     * Search torrent of the last day in given category
+     * @param $category
+     * @throws Exception
+     */
+    public function searchYesterday($category)
+    {
+        try {
+            $this->loopForTorrent('/torrents/yesterday?category=' . $category);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }

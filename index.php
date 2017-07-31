@@ -22,7 +22,13 @@ switch ($_GET['action']) {
             echo 'Category id missing';
         }
         break;
-
+    case 'yesterday':
+        if (isset($_GET['category'])) {
+            getYesterday();
+        } else {
+            echo 'Category id missing';
+        }
+        break;
     case 'download':
         if (isset($_GET['file'])) {
             download($_GET['file']);
@@ -54,6 +60,19 @@ function getMoment()
     if ($ygg->login()) {
         $category_id = $ygg::getCategoryId($_GET['category']);
         $ygg->searchMoment($category_id);
+        trashDisplay($ygg);
+    } else {
+        echo 'Unable to login. Please check your credentials';
+    }
+}
+
+// SAMPLE -- get torrent of the last day (for a given category)
+function getYesterday()
+{
+    $ygg = new Ygg();
+    if ($ygg->login()) {
+        $category_id = $ygg::getCategoryId($_GET['category']);
+        $ygg->searchYesterday($category_id);
         trashDisplay($ygg);
     } else {
         echo 'Unable to login. Please check your credentials';
