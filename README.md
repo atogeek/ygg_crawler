@@ -10,8 +10,6 @@ Le but du projet est de permettre aux développeurs utilisant l'API du site T411
 - Recherche par mot clef
 - Récupération des torrents du moment
 - Récupération des torrents des torents de la veille
-
-## A venir
 - Récupération des torrents du jour
 
 ## Exemple d'utilisation
@@ -41,3 +39,6 @@ if ($ygg->login()) {
     echo 'Unable to login. Please check your credentials';
 }
 ```
+
+#### Ils utilisent YGG Crawler
+- Guisch : YGG RSS Feed generator (https://github.com/Guisch/YGG-rss-feed-generator)

@@ -10,7 +10,7 @@ require_once('Ygg.php');
 switch ($_GET['action']) {
     case 'simple':
         if (isset($_GET['term'])) {
-            searchByTeam($_GET['term']);
+            searchByTerm($_GET['term']);
         } else {
             echo 'Term missing';
         }
@@ -29,6 +29,13 @@ switch ($_GET['action']) {
             echo 'Category id missing';
         }
         break;
+    case 'today':
+        if (isset($_GET['category'])) {
+            getToday();
+        } else {
+            echo 'Category id missing';
+        }
+        break;
     case 'download':
         if (isset($_GET['file'])) {
             download($_GET['file']);
@@ -41,7 +48,7 @@ switch ($_GET['action']) {
 }
 
 // SAMPLE -- Search by term
-function searchByTeam($search)
+function searchByTerm($search)
 {
     $ygg = new Ygg($search);
 
@@ -73,6 +80,19 @@ function getYesterday()
     if ($ygg->login()) {
         $category_id = $ygg::getCategoryId($_GET['category']);
         $ygg->searchYesterday($category_id);
+        trashDisplay($ygg);
+    } else {
+        echo 'Unable to login. Please check your credentials';
+    }
+}
+
+// SAMPLE -- get torrent of the day (for a given category)
+function getToday()
+{
+    $ygg = new Ygg();
+    if ($ygg->login()) {
+        $category_id = $ygg::getCategoryId($_GET['category']);
+        $ygg->searchToday($category_id);
         trashDisplay($ygg);
     } else {
         echo 'Unable to login. Please check your credentials';

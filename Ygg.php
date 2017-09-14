@@ -5,6 +5,7 @@
  * User: Anthony Saugrain
  * Date: 26/07/2016
  * Time: 18:08
+ * Last update : 14/09/2017
  */
 
 require_once('lib/simple_html_dom.php');
@@ -150,7 +151,10 @@ class Ygg
             // create curl resource
             $ch = curl_init();
 
-            $url = self::BASE_URL . $path;
+            // Check if we already have FQDN
+            $url = ((substr(self::BASE_URL, 0, 4 ) == 'http') ? self::BASE_URL : '') . $path;
+            //var_dump($url);die();
+
             if ($type == 'login') {
                 $datas = "id=" . urlencode($this->login) . "&pass=" . urlencode($this->password);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $datas);
@@ -250,7 +254,7 @@ class Ygg
                     if (strpos($link->children(0)->getAttribute('class'), 'arrow-up') !== false) {
                         $this->up = trim($link->children(1)->innertext);
                     } else {
-                        $this->down = trim($link->children(0)->innertext);
+                        $this->down = trim($link->children(1)->innertext);
                     }
                 }
             }
@@ -396,6 +400,20 @@ class Ygg
     {
         try {
             $this->loopForTorrent('/torrents/yesterday?category=' . $category);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    /**
+     * Search torrent of the day in given category
+     * @param $category
+     * @throws Exception
+     */
+    public function searchToday($category)
+    {
+        try {
+            $this->loopForTorrent('/torrents/today?category=' . $category);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
