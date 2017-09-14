@@ -1,0 +1,13 @@
+{
+    "name": "asaugrain/ygg_crawler",
+    "description": "Simple crawler pour yggtorrent.com",
+    "type": "library",
+    "license": "Apache License 2.0",
+    "authors": [
+        {
+            "name": "asaugrain",
+            "email": "asaugrain@digitalvirgo.com"
+        }
+    ],
+    "require": {}
+}
