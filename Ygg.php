@@ -31,6 +31,8 @@ class Ygg
     private $login;
     private $password;
     private $order;
+    private $url;
+    private $checkWithoutPagination;
 
     /**
      * Ygg constructor.
@@ -47,6 +49,7 @@ class Ygg
         $this->login = 'username';
         $this->password = 'password';
         $this->order = 'seeds';
+        $this->checkWithoutPagination = false;
     }
 
     /**
@@ -152,7 +155,7 @@ class Ygg
             $ch = curl_init();
 
             // Check if we already have FQDN
-            $url = ((substr(self::BASE_URL, 0, 4 ) == 'http') ? self::BASE_URL : '') . $path;
+            $url = ((substr(self::BASE_URL, 0, 4) == 'http') ? self::BASE_URL : '') . $path;
             //var_dump($url);die();
 
             if ($type == 'login') {
@@ -278,7 +281,8 @@ class Ygg
     {
         try {
             $term = urlencode($this->search);
-            $this->loopForTorrent('/engine/search?q=' . $term);
+            $this->url = '/engine/search?q=' . $term;
+            $this->loopForTorrent();
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
@@ -288,10 +292,10 @@ class Ygg
      * Loop and find torrent in given url
      * @param $url
      */
-    private function loopForTorrent($url)
+    private function loopForTorrent()
     {
         for ($i = 1; $i <= $this->pagination; $i++) {
-            $page = $this->call('basic', $url . '&page=' . $i);
+            $page = $this->call('basic', $this->url . '&page=' . $i);
             $this->html = $this->open($page);
             $this->extractTorrents();
         }
@@ -348,6 +352,13 @@ class Ygg
             if (count($this->torrents) > 0) {
                 if ($this->orderBy($this->order)) {
                     return true;
+                }
+            } else {
+                // If no result with pagination, check witout pagination (just one time to avoid loop..)
+                if (!$this->checkWithoutPagination) {
+                    $page = $this->call('basic', $this->url);
+                    $this->html = $this->open($page);
+                    $this->extractTorrents();
                 }
             }
 
