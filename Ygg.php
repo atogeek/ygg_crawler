@@ -46,7 +46,7 @@ class Ygg
         $this->torrents = array();
         $this->search = $search;
         $this->pagination = $pagination;
-        $this->login = 'username';
+        $this->login = 'login';
         $this->password = 'password';
         $this->order = 'seeds';
         $this->checkWithoutPagination = false;
@@ -360,6 +360,7 @@ class Ygg
             } else {
                 // If no result with pagination, check witout pagination (just one time to avoid loop..)
                 if (!$this->checkWithoutPagination) {
+                    $this->checkWithoutPagination = true;
                     $page = $this->call('basic', $this->url);
                     $this->html = $this->open($page);
                     $this->extractTorrents();
