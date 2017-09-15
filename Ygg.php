@@ -50,6 +50,10 @@ class Ygg
         $this->password = 'password';
         $this->order = 'seeds';
         $this->checkWithoutPagination = false;
+
+        // Create needed directories if needed
+        $this->checkForDirectories('tmp');
+        $this->checkForDirectories('dl');
     }
 
     /**
@@ -444,6 +448,22 @@ class Ygg
             }
 
             return false;
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    /**
+    * Check and create given directory
+    * @param $dirname
+    * @throws Exception
+    **/
+    public function checkForDirectories($dirname)
+    {
+        try{
+            if(!is_dir($dirname)) {
+                mkdir($dirname, 0755);
+            }
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
