@@ -46,8 +46,8 @@ class Ygg
         $this->torrents = array();
         $this->search = $search;
         $this->pagination = $pagination;
-        $this->login = 'login';
-        $this->password = 'password';
+        $this->login = 'mkx17';
+        $this->password = 'demanet95';
         $this->order = 'seeds';
         $this->checkWithoutPagination = false;
 
@@ -257,7 +257,7 @@ class Ygg
                     $this->down = trim($link->innertext);
                 }
 
-                if (strpos($link->innertext, 'GB') !== false) {
+                if (strpos($link->innertext, 'GB') !== false || strpos($link->innertext, 'TB') !== false) {
                     if (strpos($link->children(0)->getAttribute('class'), 'arrow-up') !== false) {
                         $this->up = trim($link->children(1)->innertext);
                     } else {
